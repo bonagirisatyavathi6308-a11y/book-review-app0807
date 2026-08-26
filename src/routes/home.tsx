@@ -101,7 +101,7 @@ function HomePage() {
             key={c}
             title={c}
             books={(categoryQueries[i]?.data as Book[] | undefined) ?? []}
-            loading={categoryQueries[i]?.isPending}
+            loading={categoryQueries[i]?.isPending ?? false}
           />
         ))}
 

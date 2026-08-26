@@ -12,6 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PromoRouteImport } from './routes/promo'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as UploadReviewRouteImport } from './routes/upload-review'
+import { Route as AuthorAuthorNameRouteImport } from './routes/author.$authorName'
+import { Route as BookBookIdRouteImport } from './routes/book.$bookId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +34,117 @@ const OnboardingRoute = OnboardingRouteImport.update({
   path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromoRoute = PromoRouteImport.update({
+  id: '/promo',
+  path: '/promo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UploadReviewRoute = UploadReviewRouteImport.update({
+  id: '/upload-review',
+  path: '/upload-review',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthorAuthorNameRoute = AuthorAuthorNameRouteImport.update({
+  id: '/author/$authorName',
+  path: '/author/$authorName',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookBookIdRoute = BookBookIdRouteImport.update({
+  id: '/book/$bookId',
+  path: '/book/$bookId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/home': typeof HomeRoute
   '/onboarding': typeof OnboardingRoute
+  '/profile': typeof ProfileRoute
+  '/promo': typeof PromoRoute
+  '/search': typeof SearchRoute
+  '/upload-review': typeof UploadReviewRoute
+  '/author/$authorName': typeof AuthorAuthorNameRoute
+  '/book/$bookId': typeof BookBookIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/home': typeof HomeRoute
   '/onboarding': typeof OnboardingRoute
+  '/profile': typeof ProfileRoute
+  '/promo': typeof PromoRoute
+  '/search': typeof SearchRoute
+  '/upload-review': typeof UploadReviewRoute
+  '/author/$authorName': typeof AuthorAuthorNameRoute
+  '/book/$bookId': typeof BookBookIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/home': typeof HomeRoute
   '/onboarding': typeof OnboardingRoute
+  '/profile': typeof ProfileRoute
+  '/promo': typeof PromoRoute
+  '/search': typeof SearchRoute
+  '/upload-review': typeof UploadReviewRoute
+  '/author/$authorName': typeof AuthorAuthorNameRoute
+  '/book/$bookId': typeof BookBookIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/home' | '/onboarding'
+  fullPaths:
+    | '/'
+    | '/home'
+    | '/onboarding'
+    | '/profile'
+    | '/promo'
+    | '/search'
+    | '/upload-review'
+    | '/author/$authorName'
+    | '/book/$bookId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/home' | '/onboarding'
-  id: '__root__' | '/' | '/home' | '/onboarding'
+  to:
+    | '/'
+    | '/home'
+    | '/onboarding'
+    | '/profile'
+    | '/promo'
+    | '/search'
+    | '/upload-review'
+    | '/author/$authorName'
+    | '/book/$bookId'
+  id:
+    | '__root__'
+    | '/'
+    | '/home'
+    | '/onboarding'
+    | '/profile'
+    | '/promo'
+    | '/search'
+    | '/upload-review'
+    | '/author/$authorName'
+    | '/book/$bookId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HomeRoute: typeof HomeRoute
   OnboardingRoute: typeof OnboardingRoute
+  ProfileRoute: typeof ProfileRoute
+  PromoRoute: typeof PromoRoute
+  SearchRoute: typeof SearchRoute
+  UploadReviewRoute: typeof UploadReviewRoute
+  AuthorAuthorNameRoute: typeof AuthorAuthorNameRoute
+  BookBookIdRoute: typeof BookBookIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +170,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/promo': {
+      id: '/promo'
+      path: '/promo'
+      fullPath: '/promo'
+      preLoaderRoute: typeof PromoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/upload-review': {
+      id: '/upload-review'
+      path: '/upload-review'
+      fullPath: '/upload-review'
+      preLoaderRoute: typeof UploadReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/author/$authorName': {
+      id: '/author/$authorName'
+      path: '/author/$authorName'
+      fullPath: '/author/$authorName'
+      preLoaderRoute: typeof AuthorAuthorNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book/$bookId': {
+      id: '/book/$bookId'
+      path: '/book/$bookId'
+      fullPath: '/book/$bookId'
+      preLoaderRoute: typeof BookBookIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +219,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HomeRoute: HomeRoute,
   OnboardingRoute: OnboardingRoute,
+  ProfileRoute: ProfileRoute,
+  PromoRoute: PromoRoute,
+  SearchRoute: SearchRoute,
+  UploadReviewRoute: UploadReviewRoute,
+  AuthorAuthorNameRoute: AuthorAuthorNameRoute,
+  BookBookIdRoute: BookBookIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
