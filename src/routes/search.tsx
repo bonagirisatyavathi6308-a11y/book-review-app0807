@@ -1,6 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { Search as SearchIcon, X } from "lucide-react";
 import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
+import { BookCard } from "@/components/BookCard";
+import { searchBooks } from "@/lib/books.functions";
+import { CATEGORIES } from "@/lib/store";
 
 export const Route = createFileRoute("/search")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -21,14 +27,103 @@ export const Route = createFileRoute("/search")({
 
 function SearchPage() {
   const { q } = Route.useSearch();
+  const navigate = useNavigate({ from: "/search" });
+  const [term, setTerm] = useState(q);
+
+  // Keep the input in sync when the URL changes (header search, back button).
+  useEffect(() => {
+    setTerm(q);
+  }, [q]);
+
+  // Debounce typing into the URL so the query key stays stable.
+  useEffect(() => {
+    if (term === q) return;
+    const t = setTimeout(() => {
+      void navigate({ to: ".", search: { q: term }, replace: true });
+    }, 350);
+    return () => clearTimeout(t);
+  }, [term, q, navigate]);
+
+  const query = q.trim();
+  const { data, isFetching, isError } = useQuery({
+    queryKey: ["search", query],
+    queryFn: () => searchBooks({ data: { query, maxResults: 24 } }),
+    enabled: query.length > 0,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const books = data ?? [];
+
   return (
     <div className="min-h-screen pb-28">
       <AppHeader />
-      <main className="mx-auto max-w-3xl px-4 py-8">
+      <main className="mx-auto max-w-3xl px-4 py-6">
         <h1 className="font-display text-2xl font-bold">Search</h1>
-        <p className="mt-2 text-muted-foreground">
-          {q ? `Showing results for “${q}”` : "Search for a title or author above."}
-        </p>
+
+        <div className="relative mt-4">
+          <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            value={term}
+            onChange={(e) => setTerm(e.target.value)}
+            placeholder="Search titles, authors, topics…"
+            aria-label="Search books"
+            className="w-full rounded-full border border-border bg-card py-3 pl-10 pr-10 text-sm shadow-soft outline-none transition focus:ring-2 focus:ring-primary/40"
+          />
+          {term ? (
+            <button
+              type="button"
+              aria-label="Clear search"
+              onClick={() => setTerm("")}
+              className="press absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          ) : null}
+        </div>
+
+        {!query ? (
+          <div className="mt-6">
+            <p className="text-sm text-muted-foreground">Try a category to get started.</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {CATEGORIES.slice(0, 10).map((c) => {
+                const label = typeof c === "string" ? c : String((c as { name?: string }).name ?? c);
+                return (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => setTerm(label)}
+                    className="press rounded-full bg-secondary px-4 py-2 text-sm font-medium"
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : isFetching && books.length === 0 ? (
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="h-56 animate-pulse rounded-2xl bg-secondary" />
+            ))}
+          </div>
+        ) : isError ? (
+          <p className="mt-8 text-sm text-muted-foreground">
+            Couldn’t reach the book service. Please try again.
+          </p>
+        ) : books.length === 0 ? (
+          <p className="mt-8 text-sm text-muted-foreground">No results for “{query}”.</p>
+        ) : (
+          <>
+            <p className="mt-5 text-sm text-muted-foreground">
+              {books.length} results for “{query}”
+            </p>
+            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {books.map((b) => (
+                <BookCard key={b.id} book={b} wide />
+              ))}
+            </div>
+          </>
+        )}
       </main>
       <BottomNav />
     </div>
