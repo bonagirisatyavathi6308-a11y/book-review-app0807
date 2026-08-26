@@ -61,11 +61,11 @@ function Onboarding() {
 
   function validateStep1() {
     const e: Record<string, string> = {};
-    if (form.name.trim().length < 2) e.name = "Please enter your name.";
+    if (form.name.trim().length < 2) e["name"] = "Please enter your name.";
     const age = Number(form.age);
-    if (!form.age || Number.isNaN(age) || age < 5 || age > 120) e.age = "Enter an age between 5 and 120.";
-    if (!form.gender) e.gender = "Please select a gender.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email)) e.email = "Enter a valid email address.";
+    if (!form.age || Number.isNaN(age) || age < 5 || age > 120) e["age"] = "Enter an age between 5 and 120.";
+    if (!form.gender) e["gender"] = "Please select a gender.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email)) e["email"] = "Enter a valid email address.";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -145,8 +145,8 @@ function Onboarding() {
                     />
                   ))}
                 </div>
-                {errors.gender ? (
-                  <span className="text-xs font-semibold text-destructive">{errors.gender}</span>
+                {errors["gender"] ? (
+                  <span className="text-xs font-semibold text-destructive">{errors["gender"]}</span>
                 ) : null}
               </div>
             </div>
@@ -166,8 +166,8 @@ function Onboarding() {
                     />
                   ))}
                 </div>
-                {errors.categories ? (
-                  <span className="text-xs font-semibold text-destructive">{errors.categories}</span>
+                {errors["categories"] ? (
+                  <span className="text-xs font-semibold text-destructive">{errors["categories"]}</span>
                 ) : null}
               </div>
               <div>
