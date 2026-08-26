@@ -79,9 +79,18 @@ function UploadReviewPage() {
   });
 
   const submit = () => {
-    if (!book) return toast.error("Pick the book you're reviewing.");
-    if (words > 100) return toast.error("Keep your comment under 100 words.");
-    if (!comment.trim() && !audio) return toast.error("Add a comment or a voice review.");
+    if (!book) {
+      toast.error("Pick the book you're reviewing.");
+      return;
+    }
+    if (words > 100) {
+      toast.error("Keep your comment under 100 words.");
+      return;
+    }
+    if (!comment.trim() && !audio) {
+      toast.error("Add a comment or a voice review.");
+      return;
+    }
 
     const review: Review = {
       id: crypto.randomUUID(),
