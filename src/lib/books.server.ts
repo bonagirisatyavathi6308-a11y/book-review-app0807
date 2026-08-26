@@ -24,16 +24,16 @@ function normalize(volume: RawVolume): Book {
   return {
     id: volume.id,
     title: info.title ?? "Untitled",
-    subtitle: info.subtitle,
     authors: info.authors ?? [],
-    thumbnail: rawThumbnail?.replace(/^http:/, "https:"),
-    publishedDate: info.publishedDate,
-    description: info.description,
     categories: info.categories ?? [],
-    pageCount: info.pageCount,
-    averageRating: info.averageRating,
-    publisher: info.publisher,
-    previewLink: info.previewLink,
+    ...(info.subtitle ? { subtitle: info.subtitle } : {}),
+    ...(rawThumbnail ? { thumbnail: rawThumbnail.replace(/^http:/, "https:") } : {}),
+    ...(info.publishedDate ? { publishedDate: info.publishedDate } : {}),
+    ...(info.description ? { description: info.description } : {}),
+    ...(info.pageCount !== undefined ? { pageCount: info.pageCount } : {}),
+    ...(info.averageRating !== undefined ? { averageRating: info.averageRating } : {}),
+    ...(info.publisher ? { publisher: info.publisher } : {}),
+    ...(info.previewLink ? { previewLink: info.previewLink } : {}),
   };
 }
 
