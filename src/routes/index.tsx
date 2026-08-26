@@ -1,24 +1,47 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { Mascot } from "@/components/Logo";
+import { isOnboarded } from "@/lib/store";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Book Review — Discover, rate and share books" },
+      {
+        name: "description",
+        content:
+          "Book Review lets you explore books from Google Books, follow favourite authors, watch promos and post text or audio reviews.",
+      },
+      { property: "og:title", content: "Book Review — Discover, rate and share books" },
+      {
+        property: "og:description",
+        content: "Explore books, follow authors and share text or audio reviews.",
+      },
+    ],
+  }),
+  component: Splash,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Splash() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      navigate({ to: isOnboarded() ? "/home" : "/onboarding", replace: true });
+    }, 1600);
+    return () => clearTimeout(t);
+  }, [navigate]);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-gradient-hero px-6 text-center">
+      <Mascot className="h-64 w-64 duration-700 animate-in fade-in zoom-in" />
+      <h1 className="sr-only">Book Review</h1>
+      <p className="font-display text-lg font-bold text-primary">
+        Read. Rate. Recommend.
+      </p>
+      <span className="h-1.5 w-32 overflow-hidden rounded-full bg-primary-soft">
+        <span className="block h-full w-1/2 animate-pulse rounded-full bg-primary" />
+      </span>
+    </main>
   );
 }
