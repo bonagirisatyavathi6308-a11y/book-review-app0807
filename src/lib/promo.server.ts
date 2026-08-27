@@ -16,7 +16,7 @@ function authHeaders() {
 export function buildPromoPrompt(input: {
   title: string;
   authors: string[];
-  description?: string;
+  description?: string | undefined;
   categories: string[];
 }): string {
   const author = input.authors[0] ? ` by ${input.authors[0]}` : "";
