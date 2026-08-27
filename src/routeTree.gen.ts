@@ -18,6 +18,7 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as UploadReviewRouteImport } from './routes/upload-review'
 import { Route as AuthorAuthorNameRouteImport } from './routes/author.$authorName'
 import { Route as BookBookIdRouteImport } from './routes/book.$bookId'
+import { Route as ApiPromoVideoIdRouteImport } from './routes/api/promo-video.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +65,11 @@ const BookBookIdRoute = BookBookIdRouteImport.update({
   path: '/book/$bookId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPromoVideoIdRoute = ApiPromoVideoIdRouteImport.update({
+  id: '/api/promo-video/$id',
+  path: '/api/promo-video/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/upload-review': typeof UploadReviewRoute
   '/author/$authorName': typeof AuthorAuthorNameRoute
   '/book/$bookId': typeof BookBookIdRoute
+  '/api/promo-video/$id': typeof ApiPromoVideoIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/upload-review': typeof UploadReviewRoute
   '/author/$authorName': typeof AuthorAuthorNameRoute
   '/book/$bookId': typeof BookBookIdRoute
+  '/api/promo-video/$id': typeof ApiPromoVideoIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/upload-review': typeof UploadReviewRoute
   '/author/$authorName': typeof AuthorAuthorNameRoute
   '/book/$bookId': typeof BookBookIdRoute
+  '/api/promo-video/$id': typeof ApiPromoVideoIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/upload-review'
     | '/author/$authorName'
     | '/book/$bookId'
+    | '/api/promo-video/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/upload-review'
     | '/author/$authorName'
     | '/book/$bookId'
+    | '/api/promo-video/$id'
   id:
     | '__root__'
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/upload-review'
     | '/author/$authorName'
     | '/book/$bookId'
+    | '/api/promo-video/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,6 +157,7 @@ export interface RootRouteChildren {
   UploadReviewRoute: typeof UploadReviewRoute
   AuthorAuthorNameRoute: typeof AuthorAuthorNameRoute
   BookBookIdRoute: typeof BookBookIdRoute
+  ApiPromoVideoIdRoute: typeof ApiPromoVideoIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -212,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookBookIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/promo-video/$id': {
+      id: '/api/promo-video/$id'
+      path: '/api/promo-video/$id'
+      fullPath: '/api/promo-video/$id'
+      preLoaderRoute: typeof ApiPromoVideoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -225,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   UploadReviewRoute: UploadReviewRoute,
   AuthorAuthorNameRoute: AuthorAuthorNameRoute,
   BookBookIdRoute: BookBookIdRoute,
+  ApiPromoVideoIdRoute: ApiPromoVideoIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
