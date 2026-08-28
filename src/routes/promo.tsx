@@ -119,17 +119,22 @@ function PromoPage() {
                   {selected.authors[0] ?? "Unknown author"}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {job?.status === "completed"
-                    ? "Promo ready"
-                    : job?.status === "failed"
-                      ? "Generation failed"
+                  {failure
+                    ? "Couldn't generate this promo"
+                    : job?.status === "completed"
+                      ? "Promo ready"
                       : "Generating… this usually takes 1–3 minutes"}
                 </p>
               </div>
             </div>
 
             <div className="mt-4 overflow-hidden rounded-2xl bg-secondary">
-              {job?.status === "completed" && job.url ? (
+              {failure ? (
+                <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 p-6 text-center">
+                  <p className="text-sm font-bold">Promo unavailable</p>
+                  <p className="text-xs text-muted-foreground">{failure}</p>
+                </div>
+              ) : job?.status === "completed" && job.url ? (
                 <video
                   key={job.id}
                   src={job.url}
