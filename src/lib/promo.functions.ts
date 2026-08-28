@@ -1,6 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { buildPromoPrompt, createPromoVideo, pollPromoVideo } from "./promo.server";
+import {
+  buildPromoPrompt,
+  createPromoVideo,
+  pollPromoVideo,
+  PromoGatewayError,
+} from "./promo.server";
 
 export type PromoStatus = {
   id: string;
@@ -22,16 +27,30 @@ export const startBookPromo = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data }): Promise<PromoStatus> => {
-    const job = await createPromoVideo(buildPromoPrompt(data));
-    return { id: job.id, status: job.status };
+    try {
+      const job = await createPromoVideo(buildPromoPrompt(data));
+      return { id: job.id, status: job.status };
+    } catch (error) {
+      if (error instanceof PromoGatewayError) {
+        return { id: "", status: "failed", error: error.message };
+      }
+      throw error;
+    }
   });
 
 export const getBookPromo = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.object({ id: z.string().min(1) }).parse(data))
   .handler(async ({ data }): Promise<PromoStatus> => {
-    const job = await pollPromoVideo(data.id);
-    return {
-      ...job,
-      ...(job.status === "completed" ? { url: `/api/promo-video/${job.id}` } : {}),
-    };
+    try {
+      const job = await pollPromoVideo(data.id);
+      return {
+        ...job,
+        ...(job.status === "completed" ? { url: `/api/promo-video/${job.id}` } : {}),
+      };
+    } catch (error) {
+      if (error instanceof PromoGatewayError) {
+        return { id: data.id, status: "failed", error: error.message };
+      }
+      throw error;
+    }
   });
