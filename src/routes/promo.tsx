@@ -37,6 +37,7 @@ function PromoPage() {
 
   const [selected, setSelected] = useState<Book | null>(null);
   const [job, setJob] = useState<PromoStatus | null>(null);
+  const [failure, setFailure] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -52,6 +53,12 @@ function PromoPage() {
     };
   }, []);
 
+  const fail = (message: string) => {
+    setBusy(false);
+    setFailure(message);
+    toast.error(message);
+  };
+
   const track = (id: string) => {
     timer.current = setTimeout(async () => {
       try {
@@ -60,11 +67,10 @@ function PromoPage() {
         if (next.status === "in_progress") track(id);
         else {
           setBusy(false);
-          if (next.status === "failed") toast.error(next.error ?? "Promo generation failed.");
+          if (next.status === "failed") fail(next.error ?? "Promo generation failed.");
         }
       } catch (error) {
-        setBusy(false);
-        toast.error(error instanceof Error ? error.message : "Promo generation failed.");
+        fail(error instanceof Error ? error.message : "Promo generation failed.");
       }
     }, 7000);
   };
@@ -73,6 +79,7 @@ function PromoPage() {
     if (busy) return;
     setSelected(book);
     setJob(null);
+    setFailure(null);
     setBusy(true);
     try {
       const created = await start({
@@ -86,10 +93,10 @@ function PromoPage() {
       setJob(created);
       track(created.id);
     } catch (error) {
-      setBusy(false);
-      toast.error(error instanceof Error ? error.message : "Could not start the promo.");
+      fail(error instanceof Error ? error.message : "Could not start the promo.");
     }
   };
+
 
   return (
     <div className="min-h-screen pb-28">
@@ -112,17 +119,22 @@ function PromoPage() {
                   {selected.authors[0] ?? "Unknown author"}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {job?.status === "completed"
-                    ? "Promo ready"
-                    : job?.status === "failed"
-                      ? "Generation failed"
+                  {failure
+                    ? "Couldn't generate this promo"
+                    : job?.status === "completed"
+                      ? "Promo ready"
                       : "Generating… this usually takes 1–3 minutes"}
                 </p>
               </div>
             </div>
 
             <div className="mt-4 overflow-hidden rounded-2xl bg-secondary">
-              {job?.status === "completed" && job.url ? (
+              {failure ? (
+                <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 p-6 text-center">
+                  <p className="text-sm font-bold">Promo unavailable</p>
+                  <p className="text-xs text-muted-foreground">{failure}</p>
+                </div>
+              ) : job?.status === "completed" && job.url ? (
                 <video
                   key={job.id}
                   src={job.url}
