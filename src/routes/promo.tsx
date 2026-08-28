@@ -123,7 +123,14 @@ function PromoPage() {
 
             <div className="mt-4 overflow-hidden rounded-2xl bg-secondary">
               {job?.status === "completed" && job.url ? (
-                <video src={job.url} controls playsInline className="aspect-video w-full" />
+                <video
+                  key={job.id}
+                  src={job.url}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="aspect-video w-full"
+                />
               ) : (
                 <div className="flex aspect-video w-full items-center justify-center">
                   <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent" />
