@@ -37,6 +37,7 @@ function PromoPage() {
 
   const [selected, setSelected] = useState<Book | null>(null);
   const [job, setJob] = useState<PromoStatus | null>(null);
+  const [failure, setFailure] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
