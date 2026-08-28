@@ -53,6 +53,12 @@ function PromoPage() {
     };
   }, []);
 
+  const fail = (message: string) => {
+    setBusy(false);
+    setFailure(message);
+    toast.error(message);
+  };
+
   const track = (id: string) => {
     timer.current = setTimeout(async () => {
       try {
@@ -61,11 +67,10 @@ function PromoPage() {
         if (next.status === "in_progress") track(id);
         else {
           setBusy(false);
-          if (next.status === "failed") toast.error(next.error ?? "Promo generation failed.");
+          if (next.status === "failed") fail(next.error ?? "Promo generation failed.");
         }
       } catch (error) {
-        setBusy(false);
-        toast.error(error instanceof Error ? error.message : "Promo generation failed.");
+        fail(error instanceof Error ? error.message : "Promo generation failed.");
       }
     }, 7000);
   };
@@ -74,6 +79,7 @@ function PromoPage() {
     if (busy) return;
     setSelected(book);
     setJob(null);
+    setFailure(null);
     setBusy(true);
     try {
       const created = await start({
@@ -87,10 +93,10 @@ function PromoPage() {
       setJob(created);
       track(created.id);
     } catch (error) {
-      setBusy(false);
-      toast.error(error instanceof Error ? error.message : "Could not start the promo.");
+      fail(error instanceof Error ? error.message : "Could not start the promo.");
     }
   };
+
 
   return (
     <div className="min-h-screen pb-28">
