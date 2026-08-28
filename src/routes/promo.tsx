@@ -91,6 +91,10 @@ function PromoPage() {
         },
       });
       setJob(created);
+      if (created.status === "failed") {
+        fail(created.error ?? "Promo generation is unavailable.");
+        return;
+      }
       track(created.id);
     } catch (error) {
       fail(error instanceof Error ? error.message : "Could not start the promo.");
@@ -104,7 +108,7 @@ function PromoPage() {
       <main className="mx-auto max-w-4xl px-4 py-6">
         <h1 className="font-display text-2xl font-bold">Book promos</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Pick a book and we&apos;ll craft an 8-second cinematic teaser for it.
+          Pick a book and we&apos;ll craft a 6-second cinematic teaser for it.
         </p>
 
         {selected ? (

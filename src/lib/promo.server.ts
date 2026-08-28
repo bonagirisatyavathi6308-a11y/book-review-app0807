@@ -7,6 +7,16 @@ export type PromoJob = {
   error?: string;
 };
 
+export class PromoGatewayError extends Error {
+  readonly status: number;
+
+  constructor(status: number, message: string) {
+    super(message);
+    this.name = "PromoGatewayError";
+    this.status = status;
+  }
+}
+
 function authHeaders() {
   const key = process.env["LOVABLE_API_KEY"];
   if (!key) throw new Error("Video generation is not configured.");
@@ -33,7 +43,7 @@ export async function createPromoVideo(prompt: string): Promise<PromoJob> {
       model: "google/veo-3.1-lite",
       instances: [{ prompt }],
       parameters: {
-        durationSeconds: 8,
+        durationSeconds: 6,
         resolution: "720p",
         aspectRatio: "16:9",
         sampleCount: 1,
@@ -44,7 +54,10 @@ export async function createPromoVideo(prompt: string): Promise<PromoJob> {
 
   if (!res.ok) {
     const err = (await res.json().catch(() => null)) as { message?: string } | null;
-    throw new Error(err?.message ?? `Video generation failed (${res.status})`);
+    throw new PromoGatewayError(
+      res.status,
+      err?.message ?? `Video generation failed (${res.status})`,
+    );
   }
 
   const job = (await res.json()) as PromoJob;
@@ -55,7 +68,10 @@ export async function pollPromoVideo(id: string): Promise<PromoJob> {
   const res = await fetch(`${GATEWAY}/${encodeURIComponent(id)}`, { headers: authHeaders() });
   if (!res.ok) {
     const err = (await res.json().catch(() => null)) as { message?: string } | null;
-    throw new Error(err?.message ?? `Could not check video status (${res.status})`);
+    throw new PromoGatewayError(
+      res.status,
+      err?.message ?? `Could not check video status (${res.status})`,
+    );
   }
   const job = (await res.json()) as PromoJob & { error?: { message?: string } };
   return {
