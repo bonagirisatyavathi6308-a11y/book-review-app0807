@@ -47,7 +47,7 @@ export function BottomNav() {
                     active ? "text-primary" : "text-muted-foreground",
                   )}
                 >
-                  {label}
+                  {text}
                 </span>
               </Link>
             </li>
