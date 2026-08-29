@@ -43,7 +43,7 @@ export async function createPromoVideo(prompt: string): Promise<PromoJob> {
       model: "google/veo-3.1-lite",
       instances: [{ prompt }],
       parameters: {
-        durationSeconds: 6,
+        durationSeconds: 8,
         resolution: "720p",
         aspectRatio: "16:9",
         sampleCount: 1,

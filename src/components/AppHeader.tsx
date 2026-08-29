@@ -3,12 +3,14 @@ import { Menu, Search as SearchIcon, X, Globe, LogOut, UserCog } from "lucide-re
 import { useState } from "react";
 import { Mascot } from "@/components/Logo";
 import { useProfile, LANGUAGES } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 
 export function AppHeader({ showSearch = true }: { showSearch?: boolean }) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const navigate = useNavigate();
   const { profile, saveProfile, clearProfile } = useProfile();
+  const { t } = useT();
   const initial = profile.name?.trim().charAt(0).toUpperCase() || "B";
 
   return (
@@ -35,13 +37,13 @@ export function AppHeader({ showSearch = true }: { showSearch?: boolean }) {
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Search books or authors"
+                placeholder={t("header.searchPlaceholder")}
                 aria-label="Search books"
                 className="w-full rounded-full border border-border bg-card py-2.5 pl-9 pr-3 text-sm outline-none transition-shadow focus:border-primary focus:shadow-soft"
               />
             </form>
           ) : (
-            <span className="flex-1 font-display text-lg font-bold">Book Review</span>
+            <span className="flex-1 font-display text-lg font-bold">{t("header.brand")}</span>
           )}
 
           <Mascot className="h-9 w-9" />
@@ -68,7 +70,7 @@ export function AppHeader({ showSearch = true }: { showSearch?: boolean }) {
                   {initial}
                 </span>
                 <div>
-                  <p className="font-display font-bold">{profile.name || "Reader"}</p>
+                  <p className="font-display font-bold">{profile.name || t("header.reader")}</p>
                   <p className="text-xs text-muted-foreground">{profile.email || "no email"}</p>
                 </div>
               </div>
@@ -89,12 +91,12 @@ export function AppHeader({ showSearch = true }: { showSearch?: boolean }) {
 
             <div className="space-y-2">
               <p className="px-1 text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                Settings
+                {t("header.settings")}
               </p>
               <label className="flex items-center gap-2 rounded-2xl bg-card p-3 text-sm">
                 <Globe className="h-4 w-4 text-primary" />
                 <select
-                  aria-label="Change language"
+                  aria-label={t("header.language")}
                   value={profile.language}
                   onChange={(e) => saveProfile({ ...profile, language: e.target.value })}
                   className="w-full bg-transparent outline-none"
@@ -109,7 +111,7 @@ export function AppHeader({ showSearch = true }: { showSearch?: boolean }) {
                 onClick={() => setOpen(false)}
                 className="press flex items-center gap-2 rounded-2xl bg-card p-3 text-sm font-semibold"
               >
-                <UserCog className="h-4 w-4 text-primary" /> Edit profile
+                <UserCog className="h-4 w-4 text-primary" /> {t("header.editProfile")}
               </Link>
               <button
                 onClick={() => {
@@ -119,7 +121,7 @@ export function AppHeader({ showSearch = true }: { showSearch?: boolean }) {
                 }}
                 className="press flex w-full items-center gap-2 rounded-2xl bg-card p-3 text-sm font-semibold text-destructive"
               >
-                <LogOut className="h-4 w-4" /> Logout
+                <LogOut className="h-4 w-4" /> {t("header.logout")}
               </button>
             </div>
           </aside>

@@ -5,6 +5,7 @@ import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
 import { useHistory, useProfile, useReviews } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
@@ -28,6 +29,7 @@ function ProfilePage() {
   const { history, clearHistory } = useHistory();
   const { reviews, removeReview } = useReviews();
   const [tab, setTab] = useState<"history" | "reviews">("history");
+  const { t } = useT();
 
   return (
     <div className="min-h-screen pb-28">
@@ -41,7 +43,7 @@ function ProfilePage() {
             <h1 className="font-display text-2xl font-bold">{profile.name || "Reader"}</h1>
             <p className="text-sm text-foreground/80">{profile.email || "Your reading profile"}</p>
             <p className="mt-1 text-xs text-foreground/70">
-              {history.length} viewed · {reviews.length} reviews · {profile.language}
+              {history.length} {t("profile.viewed")} · {reviews.length} {t("profile.reviewsCount")} · {profile.language}
             </p>
           </div>
         </section>
@@ -57,15 +59,15 @@ function ProfilePage() {
         ) : null}
 
         <div className="mt-6 flex gap-2 rounded-2xl bg-secondary p-1">
-          {(["history", "reviews"] as const).map((t) => (
+          {(["history", "reviews"] as const).map((t2) => (
             <button
-              key={t}
-              onClick={() => setTab(t)}
+              key={t2}
+              onClick={() => setTab(t2)}
               className={`press flex-1 rounded-xl px-3 py-2 text-sm font-bold capitalize ${
-                tab === t ? "bg-card shadow-soft" : "text-muted-foreground"
+                tab === t2 ? "bg-card shadow-soft" : "text-muted-foreground"
               }`}
             >
-              {t === "history" ? "Watched history" : "My reviews"}
+              {t(t2 === "history" ? "profile.history" : "profile.reviews")}
             </button>
           ))}
         </div>

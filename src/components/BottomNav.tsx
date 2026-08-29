@@ -1,16 +1,18 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Home, Search, PenLine, Clapperboard, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useT, type TranslationKey } from "@/lib/i18n";
 
 const items = [
-  { to: "/home", label: "Home", icon: Home },
-  { to: "/search", label: "Search", icon: Search },
-  { to: "/upload-review", label: "Review", icon: PenLine },
-  { to: "/promo", label: "Promo", icon: Clapperboard },
-  { to: "/profile", label: "Profile", icon: User },
+  { to: "/home", label: "nav.home", icon: Home },
+  { to: "/search", label: "nav.search", icon: Search },
+  { to: "/upload-review", label: "nav.review", icon: PenLine },
+  { to: "/promo", label: "nav.promo", icon: Clapperboard },
+  { to: "/profile", label: "nav.profile", icon: User },
 ] as const;
 
 export function BottomNav() {
+  const { t } = useT();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
@@ -20,6 +22,7 @@ export function BottomNav() {
     >
       <ul className="mx-auto flex max-w-3xl items-stretch justify-between px-2 py-1.5">
         {items.map(({ to, label, icon: Icon }) => {
+          const text = t(label as TranslationKey);
           const active = pathname === to || pathname.startsWith(`${to}/`);
           return (
             <li key={to} className="flex-1">
@@ -44,7 +47,7 @@ export function BottomNav() {
                     active ? "text-primary" : "text-muted-foreground",
                   )}
                 >
-                  {label}
+                  {text}
                 </span>
               </Link>
             </li>

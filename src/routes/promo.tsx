@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import ReactPlayer from "react-player";
 import { toast } from "sonner";
 import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
@@ -9,6 +10,7 @@ import { BookCover } from "@/components/BookCard";
 import { Button } from "@/components/ui/button";
 import { searchBooks, type Book } from "@/lib/books.functions";
 import { startBookPromo, getBookPromo, type PromoStatus } from "@/lib/promo.functions";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/promo")({
   head: () => ({
@@ -34,6 +36,7 @@ function PromoPage() {
   const search = useServerFn(searchBooks);
   const start = useServerFn(startBookPromo);
   const poll = useServerFn(getBookPromo);
+  const { t } = useT();
 
   const [selected, setSelected] = useState<Book | null>(null);
   const [job, setJob] = useState<PromoStatus | null>(null);
@@ -106,9 +109,9 @@ function PromoPage() {
     <div className="min-h-screen pb-28">
       <AppHeader />
       <main className="mx-auto max-w-4xl px-4 py-6">
-        <h1 className="font-display text-2xl font-bold">Book promos</h1>
+        <h1 className="font-display text-2xl font-bold">{t("promo.title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Pick a book and we&apos;ll craft a 6-second cinematic teaser for it.
+          {t("promo.subtitle")}
         </p>
 
         {selected ? (
@@ -124,10 +127,10 @@ function PromoPage() {
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
                   {failure
-                    ? "Couldn't generate this promo"
+                    ? t("promo.failedShort")
                     : job?.status === "completed"
-                      ? "Promo ready"
-                      : "Generating… this usually takes 1–3 minutes"}
+                      ? t("promo.ready")
+                      : t("promo.working")}
                 </p>
               </div>
             </div>
@@ -135,18 +138,21 @@ function PromoPage() {
             <div className="mt-4 overflow-hidden rounded-2xl bg-secondary">
               {failure ? (
                 <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 p-6 text-center">
-                  <p className="text-sm font-bold">Promo unavailable</p>
+                  <p className="text-sm font-bold">{t("promo.unavailable")}</p>
                   <p className="text-xs text-muted-foreground">{failure}</p>
                 </div>
               ) : job?.status === "completed" && job.url ? (
-                <video
-                  key={job.id}
-                  src={job.url}
-                  controls
-                  autoPlay
-                  playsInline
-                  className="aspect-video w-full"
-                />
+                <div className="aspect-video w-full">
+                  <ReactPlayer
+                    key={job.id}
+                    src={job.url}
+                    controls
+                    playing
+                    playsInline
+                    width="100%"
+                    height="100%"
+                  />
+                </div>
               ) : (
                 <div className="flex aspect-video w-full items-center justify-center">
                   <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent" />
@@ -156,7 +162,7 @@ function PromoPage() {
           </section>
         ) : null}
 
-        <h2 className="mt-8 font-display text-lg font-bold">Choose a book</h2>
+        <h2 className="mt-8 font-display text-lg font-bold">{t("promo.choose")}</h2>
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
           {isLoading
             ? Array.from({ length: 8 }).map((_, i) => (
@@ -174,7 +180,7 @@ function PromoPage() {
                     disabled={busy}
                     onClick={() => generate(book)}
                   >
-                    {busy && selected?.id === book.id ? "Generating…" : "Generate promo"}
+                    {busy && selected?.id === book.id ? t("promo.generating") : t("promo.generate")}
                   </Button>
                 </div>
               ))}

@@ -6,6 +6,7 @@ import BottomNav from "@/components/BottomNav";
 import { BookRow } from "@/components/BookCard";
 import { searchBooks, type Book } from "@/lib/books.functions";
 import { useProfile } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/home")({
   head: () => ({
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/home")({
 
 function HomePage() {
   const { profile, ready } = useProfile();
+  const { t } = useT();
   const authors = profile.authors.length ? profile.authors.slice(0, 4) : ["Agatha Christie", "Paulo Coelho"];
   const categories = profile.categories.length ? profile.categories.slice(0, 4) : ["Fiction", "Mystery"];
 
@@ -61,15 +63,15 @@ function HomePage() {
       <main className="mx-auto max-w-3xl px-3">
         <section className="mt-4 rounded-3xl bg-gradient-brand p-5 shadow-soft">
           <h1 className="font-display text-2xl font-bold">
-            Hi {profile.name || "reader"} 👋
+            {t("home.greeting")} {profile.name || t("header.reader")} 👋
           </h1>
           <p className="mt-1 text-sm text-foreground/80">
-            Fresh picks based on the authors and genres you love.
+            {t("home.subtitle")}
           </p>
         </section>
 
         <section className="mt-6">
-          <h2 className="mb-3 px-1 font-display text-lg font-bold">Favourite authors</h2>
+          <h2 className="mb-3 px-1 font-display text-lg font-bold">{t("home.favouriteAuthors")}</h2>
           <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
             {authors.map((a, i) => {
               const cover = (authorQueries[i]?.data as Book[] | undefined)?.[0]?.thumbnail;
@@ -106,16 +108,15 @@ function HomePage() {
         ))}
 
         <BookRow
-          title="Trending now"
+          title={t("home.trending")}
           books={(trending.data as Book[] | undefined) ?? []}
           loading={trending.isPending}
         />
 
         <footer className="mt-10 rounded-3xl bg-card p-5 shadow-soft">
-          <h2 className="font-display text-lg font-bold">About us</h2>
+          <h2 className="font-display text-lg font-bold">{t("home.aboutUs")}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Book Review is a cosy corner for readers to discover books, watch promos and share
-            honest text or audio reviews with the community.
+            {t("home.aboutBody")}
           </p>
           <a
             href="mailto:hello@bookreview.app"

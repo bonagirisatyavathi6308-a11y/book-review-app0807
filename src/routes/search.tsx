@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Search as SearchIcon, X } from "lucide-react";
 import AppHeader from "@/components/AppHeader";
+import { useT } from "@/lib/i18n";
 import BottomNav from "@/components/BottomNav";
 import { BookCard } from "@/components/BookCard";
 import { searchBooks } from "@/lib/books.functions";
@@ -53,19 +54,20 @@ function SearchPage() {
   });
 
   const books = data ?? [];
+  const { t } = useT();
 
   return (
     <div className="min-h-screen pb-28">
       <AppHeader />
       <main className="mx-auto max-w-3xl px-4 py-6">
-        <h1 className="font-display text-2xl font-bold">Search</h1>
+        <h1 className="font-display text-2xl font-bold">{t("search.title")}</h1>
 
         <div className="relative mt-4">
           <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             value={term}
             onChange={(e) => setTerm(e.target.value)}
-            placeholder="Search titles, authors, topics…"
+            placeholder={t("search.placeholder")}
             aria-label="Search books"
             className="w-full rounded-full border border-border bg-card py-3 pl-10 pr-10 text-sm shadow-soft outline-none transition focus:ring-2 focus:ring-primary/40"
           />
@@ -83,7 +85,7 @@ function SearchPage() {
 
         {!query ? (
           <div className="mt-6">
-            <p className="text-sm text-muted-foreground">Try a category to get started.</p>
+            <p className="text-sm text-muted-foreground">{t("search.hint")}</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {CATEGORIES.slice(0, 10).map((c) => {
                 const label = typeof c === "string" ? c : String((c as { name?: string }).name ?? c);
@@ -111,7 +113,7 @@ function SearchPage() {
             Couldn’t reach the book service. Please try again.
           </p>
         ) : books.length === 0 ? (
-          <p className="mt-8 text-sm text-muted-foreground">No results for “{query}”.</p>
+          <p className="mt-8 text-sm text-muted-foreground">{t("search.noResults")} “{query}”.</p>
         ) : (
           <>
             <p className="mt-5 text-sm text-muted-foreground">
