@@ -6,6 +6,7 @@ import { Star } from "lucide-react";
 import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import { BookCover, BookRow } from "@/components/BookCard";
+import BookTeaser from "@/components/BookTeaser";
 import { Button } from "@/components/ui/button";
 import { getBook, searchBooks, type Book } from "@/lib/books.functions";
 import { trackVisit, useReviews } from "@/lib/store";
