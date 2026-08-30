@@ -110,6 +110,8 @@ function BookPage() {
               </div>
             </section>
 
+            <BookTeaser book={book} />
+
             {book.description ? (
               <section className="mt-5 rounded-3xl bg-card p-4 shadow-soft">
                 <h2 className="font-display text-lg font-bold">Synopsis</h2>
