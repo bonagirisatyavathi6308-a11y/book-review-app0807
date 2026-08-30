@@ -4,7 +4,6 @@ export type TranslationKey =
   | "nav.home"
   | "nav.search"
   | "nav.review"
-  | "nav.promo"
   | "nav.profile"
   | "header.searchPlaceholder"
   | "header.brand"
@@ -27,15 +26,6 @@ export type TranslationKey =
   | "profile.reviews"
   | "profile.viewed"
   | "profile.reviewsCount"
-  | "promo.title"
-  | "promo.subtitle"
-  | "promo.choose"
-  | "promo.generate"
-  | "promo.generating"
-  | "promo.ready"
-  | "promo.working"
-  | "promo.unavailable"
-  | "promo.failedShort";
 
 type Dict = Partial<Record<TranslationKey, string>>;
 
@@ -43,7 +33,6 @@ const en: Record<TranslationKey, string> = {
   "nav.home": "Home",
   "nav.search": "Search",
   "nav.review": "Review",
-  "nav.promo": "Promo",
   "nav.profile": "Profile",
   "header.searchPlaceholder": "Search books or authors",
   "header.brand": "Book Review",
@@ -58,7 +47,7 @@ const en: Record<TranslationKey, string> = {
   "home.trending": "Trending now",
   "home.aboutUs": "About us",
   "home.aboutBody":
-    "Book Review is a cosy corner for readers to discover books, watch promos and share honest text or audio reviews with the community.",
+    "Book Review is a cosy corner for readers to discover books and share honest text or audio reviews with the community.",
   "search.title": "Search",
   "search.placeholder": "Search titles, authors, topics…",
   "search.hint": "Try a category to get started.",
@@ -67,22 +56,12 @@ const en: Record<TranslationKey, string> = {
   "profile.reviews": "My reviews",
   "profile.viewed": "viewed",
   "profile.reviewsCount": "reviews",
-  "promo.title": "Book promos",
-  "promo.subtitle": "Pick a book and we’ll craft a short cinematic teaser for it.",
-  "promo.choose": "Choose a book",
-  "promo.generate": "Generate promo",
-  "promo.generating": "Generating…",
-  "promo.ready": "Promo ready",
-  "promo.working": "Generating… this usually takes 1–3 minutes",
-  "promo.unavailable": "Promo unavailable",
-  "promo.failedShort": "Couldn’t generate this promo",
 };
 
 const hi: Dict = {
   "nav.home": "होम",
   "nav.search": "खोज",
   "nav.review": "समीक्षा",
-  "nav.promo": "प्रोमो",
   "nav.profile": "प्रोफ़ाइल",
   "header.searchPlaceholder": "किताबें या लेखक खोजें",
   "header.settings": "सेटिंग्स",
@@ -103,22 +82,12 @@ const hi: Dict = {
   "profile.reviews": "मेरी समीक्षाएँ",
   "profile.viewed": "देखा",
   "profile.reviewsCount": "समीक्षाएँ",
-  "promo.title": "पुस्तक प्रोमो",
-  "promo.subtitle": "एक किताब चुनें और हम उसका छोटा सिनेमाई टीज़र बनाएंगे।",
-  "promo.choose": "किताब चुनें",
-  "promo.generate": "प्रोमो बनाएं",
-  "promo.generating": "बन रहा है…",
-  "promo.ready": "प्रोमो तैयार",
-  "promo.working": "बन रहा है… इसमें 1–3 मिनट लगते हैं",
-  "promo.unavailable": "प्रोमो उपलब्ध नहीं",
-  "promo.failedShort": "यह प्रोमो नहीं बन सका",
 };
 
 const te: Dict = {
   "nav.home": "హోమ్",
   "nav.search": "వెతకండి",
   "nav.review": "సమీక్ష",
-  "nav.promo": "ప్రోమో",
   "nav.profile": "ప్రొఫైల్",
   "header.searchPlaceholder": "పుస్తకాలు లేదా రచయితలను వెతకండి",
   "header.settings": "సెట్టింగ్‌లు",
@@ -139,22 +108,12 @@ const te: Dict = {
   "profile.reviews": "నా సమీక్షలు",
   "profile.viewed": "చూశారు",
   "profile.reviewsCount": "సమీక్షలు",
-  "promo.title": "పుస్తక ప్రోమోలు",
-  "promo.subtitle": "ఒక పుస్తకాన్ని ఎంచుకోండి, మేము చిన్న సినిమాటిక్ టీజర్ చేస్తాం.",
-  "promo.choose": "పుస్తకాన్ని ఎంచుకోండి",
-  "promo.generate": "ప్రోమో చేయండి",
-  "promo.generating": "తయారవుతోంది…",
-  "promo.ready": "ప్రోమో సిద్ధం",
-  "promo.working": "తయారవుతోంది… సాధారణంగా 1–3 నిమిషాలు",
-  "promo.unavailable": "ప్రోమో అందుబాటులో లేదు",
-  "promo.failedShort": "ఈ ప్రోమో తయారు కాలేదు",
 };
 
 const ta: Dict = {
   "nav.home": "முகப்பு",
   "nav.search": "தேடு",
   "nav.review": "விமர்சனம்",
-  "nav.promo": "ப்ரோமோ",
   "nav.profile": "சுயவிவரம்",
   "header.searchPlaceholder": "புத்தகங்கள் அல்லது ஆசிரியர்களைத் தேடுங்கள்",
   "header.settings": "அமைப்புகள்",
@@ -175,22 +134,12 @@ const ta: Dict = {
   "profile.reviews": "என் விமர்சனங்கள்",
   "profile.viewed": "பார்த்தது",
   "profile.reviewsCount": "விமர்சனங்கள்",
-  "promo.title": "புத்தக ப்ரோமோக்கள்",
-  "promo.subtitle": "ஒரு புத்தகத்தைத் தேர்ந்தெடுங்கள், குறும் டீசர் உருவாக்குகிறோம்.",
-  "promo.choose": "புத்தகத்தைத் தேர்ந்தெடு",
-  "promo.generate": "ப்ரோமோ உருவாக்கு",
-  "promo.generating": "உருவாக்குகிறது…",
-  "promo.ready": "ப்ரோமோ தயார்",
-  "promo.working": "உருவாக்குகிறது… 1–3 நிமிடங்கள் ஆகும்",
-  "promo.unavailable": "ப்ரோமோ கிடைக்கவில்லை",
-  "promo.failedShort": "இந்த ப்ரோமோவை உருவாக்க முடியவில்லை",
 };
 
 const es: Dict = {
   "nav.home": "Inicio",
   "nav.search": "Buscar",
   "nav.review": "Reseña",
-  "nav.promo": "Promo",
   "nav.profile": "Perfil",
   "header.searchPlaceholder": "Busca libros o autores",
   "header.settings": "Ajustes",
@@ -211,22 +160,12 @@ const es: Dict = {
   "profile.reviews": "Mis reseñas",
   "profile.viewed": "vistos",
   "profile.reviewsCount": "reseñas",
-  "promo.title": "Promos de libros",
-  "promo.subtitle": "Elige un libro y crearemos un teaser cinematográfico.",
-  "promo.choose": "Elige un libro",
-  "promo.generate": "Generar promo",
-  "promo.generating": "Generando…",
-  "promo.ready": "Promo lista",
-  "promo.working": "Generando… suele tardar 1–3 minutos",
-  "promo.unavailable": "Promo no disponible",
-  "promo.failedShort": "No se pudo generar esta promo",
 };
 
 const fr: Dict = {
   "nav.home": "Accueil",
   "nav.search": "Recherche",
   "nav.review": "Avis",
-  "nav.promo": "Promo",
   "nav.profile": "Profil",
   "header.searchPlaceholder": "Rechercher des livres ou auteurs",
   "header.settings": "Paramètres",
@@ -247,22 +186,12 @@ const fr: Dict = {
   "profile.reviews": "Mes avis",
   "profile.viewed": "consultés",
   "profile.reviewsCount": "avis",
-  "promo.title": "Promos de livres",
-  "promo.subtitle": "Choisissez un livre et nous créerons un teaser cinématographique.",
-  "promo.choose": "Choisir un livre",
-  "promo.generate": "Générer la promo",
-  "promo.generating": "Génération…",
-  "promo.ready": "Promo prête",
-  "promo.working": "Génération… cela prend 1 à 3 minutes",
-  "promo.unavailable": "Promo indisponible",
-  "promo.failedShort": "Impossible de générer cette promo",
 };
 
 const de: Dict = {
   "nav.home": "Start",
   "nav.search": "Suche",
   "nav.review": "Rezension",
-  "nav.promo": "Promo",
   "nav.profile": "Profil",
   "header.searchPlaceholder": "Bücher oder Autoren suchen",
   "header.settings": "Einstellungen",
@@ -283,22 +212,12 @@ const de: Dict = {
   "profile.reviews": "Meine Rezensionen",
   "profile.viewed": "angesehen",
   "profile.reviewsCount": "Rezensionen",
-  "promo.title": "Buch-Promos",
-  "promo.subtitle": "Wähle ein Buch und wir erstellen einen kurzen Teaser.",
-  "promo.choose": "Buch wählen",
-  "promo.generate": "Promo erstellen",
-  "promo.generating": "Wird erstellt…",
-  "promo.ready": "Promo fertig",
-  "promo.working": "Wird erstellt… dauert 1–3 Minuten",
-  "promo.unavailable": "Promo nicht verfügbar",
-  "promo.failedShort": "Diese Promo konnte nicht erstellt werden",
 };
 
 const ja: Dict = {
   "nav.home": "ホーム",
   "nav.search": "検索",
   "nav.review": "レビュー",
-  "nav.promo": "プロモ",
   "nav.profile": "プロフィール",
   "header.searchPlaceholder": "本や著者を検索",
   "header.settings": "設定",
@@ -319,15 +238,6 @@ const ja: Dict = {
   "profile.reviews": "自分のレビュー",
   "profile.viewed": "閲覧",
   "profile.reviewsCount": "レビュー",
-  "promo.title": "ブックプロモ",
-  "promo.subtitle": "本を選ぶと、短いシネマティック予告を作ります。",
-  "promo.choose": "本を選ぶ",
-  "promo.generate": "プロモを作成",
-  "promo.generating": "作成中…",
-  "promo.ready": "プロモ完成",
-  "promo.working": "作成中… 通常1〜3分かかります",
-  "promo.unavailable": "プロモを利用できません",
-  "promo.failedShort": "このプロモを作成できませんでした",
 };
 
 const DICTS: Record<string, Dict> = {

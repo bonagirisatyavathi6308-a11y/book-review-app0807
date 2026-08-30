@@ -10,7 +10,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Book Review lets you explore books from Google Books, follow favourite authors, watch promos and post text or audio reviews.",
+          "Book Review lets you explore books from Google Books, follow favourite authors, post text or audio reviews.",
       },
       { property: "og:title", content: "Book Review — Discover, rate and share books" },
       {
