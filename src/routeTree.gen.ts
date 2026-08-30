@@ -13,12 +13,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as PromoRouteImport } from './routes/promo'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as UploadReviewRouteImport } from './routes/upload-review'
 import { Route as AuthorAuthorNameRouteImport } from './routes/author.$authorName'
 import { Route as BookBookIdRouteImport } from './routes/book.$bookId'
-import { Route as ApiPromoVideoIdRouteImport } from './routes/api/promo-video.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -38,11 +36,6 @@ const OnboardingRoute = OnboardingRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PromoRoute = PromoRouteImport.update({
-  id: '/promo',
-  path: '/promo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SearchRoute = SearchRouteImport.update({
@@ -65,35 +58,26 @@ const BookBookIdRoute = BookBookIdRouteImport.update({
   path: '/book/$bookId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPromoVideoIdRoute = ApiPromoVideoIdRouteImport.update({
-  id: '/api/promo-video/$id',
-  path: '/api/promo-video/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/home': typeof HomeRoute
   '/onboarding': typeof OnboardingRoute
   '/profile': typeof ProfileRoute
-  '/promo': typeof PromoRoute
   '/search': typeof SearchRoute
   '/upload-review': typeof UploadReviewRoute
   '/author/$authorName': typeof AuthorAuthorNameRoute
   '/book/$bookId': typeof BookBookIdRoute
-  '/api/promo-video/$id': typeof ApiPromoVideoIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/home': typeof HomeRoute
   '/onboarding': typeof OnboardingRoute
   '/profile': typeof ProfileRoute
-  '/promo': typeof PromoRoute
   '/search': typeof SearchRoute
   '/upload-review': typeof UploadReviewRoute
   '/author/$authorName': typeof AuthorAuthorNameRoute
   '/book/$bookId': typeof BookBookIdRoute
-  '/api/promo-video/$id': typeof ApiPromoVideoIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -101,12 +85,10 @@ export interface FileRoutesById {
   '/home': typeof HomeRoute
   '/onboarding': typeof OnboardingRoute
   '/profile': typeof ProfileRoute
-  '/promo': typeof PromoRoute
   '/search': typeof SearchRoute
   '/upload-review': typeof UploadReviewRoute
   '/author/$authorName': typeof AuthorAuthorNameRoute
   '/book/$bookId': typeof BookBookIdRoute
-  '/api/promo-video/$id': typeof ApiPromoVideoIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -115,36 +97,30 @@ export interface FileRouteTypes {
     | '/home'
     | '/onboarding'
     | '/profile'
-    | '/promo'
     | '/search'
     | '/upload-review'
     | '/author/$authorName'
     | '/book/$bookId'
-    | '/api/promo-video/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/home'
     | '/onboarding'
     | '/profile'
-    | '/promo'
     | '/search'
     | '/upload-review'
     | '/author/$authorName'
     | '/book/$bookId'
-    | '/api/promo-video/$id'
   id:
     | '__root__'
     | '/'
     | '/home'
     | '/onboarding'
     | '/profile'
-    | '/promo'
     | '/search'
     | '/upload-review'
     | '/author/$authorName'
     | '/book/$bookId'
-    | '/api/promo-video/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -152,12 +128,10 @@ export interface RootRouteChildren {
   HomeRoute: typeof HomeRoute
   OnboardingRoute: typeof OnboardingRoute
   ProfileRoute: typeof ProfileRoute
-  PromoRoute: typeof PromoRoute
   SearchRoute: typeof SearchRoute
   UploadReviewRoute: typeof UploadReviewRoute
   AuthorAuthorNameRoute: typeof AuthorAuthorNameRoute
   BookBookIdRoute: typeof BookBookIdRoute
-  ApiPromoVideoIdRoute: typeof ApiPromoVideoIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -190,13 +164,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/promo': {
-      id: '/promo'
-      path: '/promo'
-      fullPath: '/promo'
-      preLoaderRoute: typeof PromoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/search': {
       id: '/search'
       path: '/search'
@@ -225,13 +192,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookBookIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/promo-video/$id': {
-      id: '/api/promo-video/$id'
-      path: '/api/promo-video/$id'
-      fullPath: '/api/promo-video/$id'
-      preLoaderRoute: typeof ApiPromoVideoIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -240,12 +200,10 @@ const rootRouteChildren: RootRouteChildren = {
   HomeRoute: HomeRoute,
   OnboardingRoute: OnboardingRoute,
   ProfileRoute: ProfileRoute,
-  PromoRoute: PromoRoute,
   SearchRoute: SearchRoute,
   UploadReviewRoute: UploadReviewRoute,
   AuthorAuthorNameRoute: AuthorAuthorNameRoute,
   BookBookIdRoute: BookBookIdRoute,
-  ApiPromoVideoIdRoute: ApiPromoVideoIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
