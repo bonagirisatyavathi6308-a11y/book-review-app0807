@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Pause, Play, RotateCcw } from "lucide-react";
+import { Pause, Play, RotateCcw, Volume2, VolumeX } from "lucide-react";
+import { TeaserMusic } from "@/lib/teaserMusic";
 import type { Book } from "@/lib/books.functions";
 
 const DURATION = 18_000; // ms
@@ -56,6 +57,9 @@ export default function BookTeaser({ book }: { book: Book }) {
 
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [muted, setMuted] = useState(false);
+  const musicRef = useRef<TeaserMusic | null>(null);
+
 
   // load cover
   useEffect(() => {
@@ -244,6 +248,7 @@ export default function BookTeaser({ book }: { book: Book }) {
           elapsedRef.current = DURATION;
           playingRef.current = false;
           setPlaying(false);
+          musicRef.current?.pause();
         }
         setProgress(elapsedRef.current / DURATION);
       } else {
@@ -258,6 +263,20 @@ export default function BookTeaser({ book }: { book: Book }) {
     };
   }, [draw]);
 
+  // one soundtrack per book; cleaned up on unmount / book change
+  useEffect(() => {
+    const music = new TeaserMusic(book.id);
+    musicRef.current = music;
+    return () => {
+      music.dispose();
+      musicRef.current = null;
+    };
+  }, [book.id]);
+
+  useEffect(() => {
+    musicRef.current?.setMuted(muted);
+  }, [muted]);
+
   // reset when the book changes
   useEffect(() => {
     elapsedRef.current = 0;
@@ -267,10 +286,19 @@ export default function BookTeaser({ book }: { book: Book }) {
   }, [book.id]);
 
   const toggle = () => {
-    if (elapsedRef.current >= DURATION) elapsedRef.current = 0;
+    if (elapsedRef.current >= DURATION) {
+      elapsedRef.current = 0;
+      musicRef.current?.restart();
+    }
     lastTickRef.current = null;
     playingRef.current = !playingRef.current;
     setPlaying(playingRef.current);
+    if (playingRef.current) {
+      musicRef.current?.setMuted(muted);
+      musicRef.current?.play();
+    } else {
+      musicRef.current?.pause();
+    }
   };
 
   const restart = () => {
@@ -278,6 +306,9 @@ export default function BookTeaser({ book }: { book: Book }) {
     lastTickRef.current = null;
     playingRef.current = true;
     setPlaying(true);
+    musicRef.current?.restart();
+    musicRef.current?.setMuted(muted);
+    musicRef.current?.play();
   };
 
   const seek = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -285,6 +316,7 @@ export default function BookTeaser({ book }: { book: Book }) {
     elapsedRef.current = clamp01((e.clientX - rect.left) / rect.width) * DURATION;
     setProgress(elapsedRef.current / DURATION);
   };
+
 
   const seconds = Math.ceil((DURATION - progress * DURATION) / 1000);
 
@@ -316,6 +348,14 @@ export default function BookTeaser({ book }: { book: Book }) {
           className="press flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-foreground"
         >
           <RotateCcw className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          onClick={() => setMuted((m) => !m)}
+          aria-label={muted ? "Unmute teaser music" : "Mute teaser music"}
+          className="press flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-foreground"
+        >
+          {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
         </button>
         <div
           onClick={seek}
