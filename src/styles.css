@@ -136,7 +136,20 @@
     border-color: var(--color-border);
   }
 
+  html {
+    /* stop iOS text-size auto-adjust (layout shift on rotation) */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* disable double-tap-to-zoom delay/zoom */
+    touch-action: manipulation;
+  }
+
   body {
+    /* block pinch-zoom and double-tap zoom gestures */
+    touch-action: pan-x pan-y;
+    overscroll-behavior-y: none;
+    overflow-x: clip;
+    width: 100%;
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
