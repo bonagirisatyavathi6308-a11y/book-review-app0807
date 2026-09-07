@@ -349,6 +349,14 @@ export default function BookTeaser({ book }: { book: Book }) {
         >
           <RotateCcw className="h-4 w-4" />
         </button>
+        <button
+          type="button"
+          onClick={() => setMuted((m) => !m)}
+          aria-label={muted ? "Unmute teaser music" : "Mute teaser music"}
+          className="press flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-foreground"
+        >
+          {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+        </button>
         <div
           onClick={seek}
           role="presentation"
