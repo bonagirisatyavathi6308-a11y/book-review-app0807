@@ -57,6 +57,9 @@ export default function BookTeaser({ book }: { book: Book }) {
 
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [muted, setMuted] = useState(false);
+  const musicRef = useRef<TeaserMusic | null>(null);
+
 
   // load cover
   useEffect(() => {
