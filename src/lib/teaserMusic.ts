@@ -89,31 +89,31 @@ export class TeaserMusic {
 
   private schedule() {
     const ctx = this.ctx!;
-    const stepDur = 0.35;
     while (this.nextNoteTime < ctx.currentTime + 0.4) {
       const t = this.nextNoteTime;
       const s = this.step;
+      const len = this.scale.length;
 
-      // arpeggio / melody
-      const degree = this.scale[(s * 2 + Math.floor(s / 4)) % this.scale.length]!;
-      const octave = s % 8 < 4 ? 12 : 24;
-      this.voice(semitone(this.root, degree + octave), t, 0.9, 0.12, "triangle");
+      // arpeggio / melody — pattern and octave shift differ per book
+      const degree = this.scale[(s * this.melodyJump + Math.floor(s / 4) + this.arpOffset) % len]!;
+      const octave = (s + this.arpOffset) % 8 < 4 ? 12 : 24;
+      this.voice(semitone(this.root, degree + octave), t, this.tempo * 2.6, 0.12, this.leadType);
 
-      // soft pad chord every bar
+      // soft pad chord every bar, voiced from the book's scale
       if (s % 8 === 0) {
-        const chordRoot = this.scale[(s / 8) % this.scale.length]!;
+        const chordRoot = this.scale[(s / 8 + this.arpOffset) % len]!;
         [0, 4, 7].forEach((iv, i) =>
-          this.voice(semitone(this.root, chordRoot + iv), t, 3.2, 0.055 - i * 0.008, "sine"),
+          this.voice(semitone(this.root, chordRoot + iv), t, this.tempo * 9, 0.055 - i * 0.008, "sine"),
         );
       }
 
-      // gentle bass pulse
-      if (s % 4 === 0) {
-        this.voice(semitone(this.root, -12), t, 1.1, 0.1, "sine");
+      // bass pulse — on-beat or syncopated depending on the book
+      if (s % 4 === this.arpOffset % 3) {
+        this.voice(semitone(this.root, -12), t, this.tempo * 3.2, 0.1, this.bassType);
       }
 
       this.step = s + 1;
-      this.nextNoteTime += stepDur;
+      this.nextNoteTime += this.tempo;
     }
   }
 
