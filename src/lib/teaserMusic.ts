@@ -10,6 +10,13 @@ const SCALES: number[][] = [
 
 const ROOTS = [220, 233.08, 246.94, 261.63, 293.66, 311.13];
 
+// Per-book arrangement presets — different tempos, rhythms, timbres.
+const TEMPOS = [0.26, 0.3, 0.35, 0.42, 0.5]; // seconds per step
+const LEAD_TYPES: OscillatorType[] = ["triangle", "sine", "square", "sawtooth"];
+const BASS_TYPES: OscillatorType[] = ["sine", "triangle"];
+const MELODY_STEPS = [2, 3, 1, 4]; // melody interval jump per style
+const FILTERS = [1400, 1800, 2200, 2800];
+
 function hash(str: string) {
   let h = 2166136261;
   for (let i = 0; i < str.length; i++) {
@@ -29,12 +36,24 @@ export class TeaserMusic {
   private step = 0;
   private scale: number[];
   private root: number;
+  private tempo: number;
+  private leadType: OscillatorType;
+  private bassType: OscillatorType;
+  private melodyJump: number;
+  private filterFreq: number;
+  private arpOffset: number;
   private muted = false;
 
   constructor(seed: string) {
     const h = hash(seed || "book");
     this.scale = SCALES[h % SCALES.length]!;
     this.root = ROOTS[(h >> 3) % ROOTS.length]!;
+    this.tempo = TEMPOS[(h >> 5) % TEMPOS.length]!;
+    this.leadType = LEAD_TYPES[(h >> 8) % LEAD_TYPES.length]!;
+    this.bassType = BASS_TYPES[(h >> 11) % BASS_TYPES.length]!;
+    this.melodyJump = MELODY_STEPS[(h >> 13) % MELODY_STEPS.length]!;
+    this.filterFreq = FILTERS[(h >> 15) % FILTERS.length]!;
+    this.arpOffset = (h >> 17) % 5;
   }
 
   private ensureCtx() {
@@ -57,7 +76,7 @@ export class TeaserMusic {
     const env = ctx.createGain();
     const filter = ctx.createBiquadFilter();
     filter.type = "lowpass";
-    filter.frequency.value = 2200;
+    filter.frequency.value = this.filterFreq;
     osc.type = type;
     osc.frequency.value = freq;
     env.gain.setValueAtTime(0.0001, time);
@@ -70,31 +89,31 @@ export class TeaserMusic {
 
   private schedule() {
     const ctx = this.ctx!;
-    const stepDur = 0.35;
     while (this.nextNoteTime < ctx.currentTime + 0.4) {
       const t = this.nextNoteTime;
       const s = this.step;
+      const len = this.scale.length;
 
-      // arpeggio / melody
-      const degree = this.scale[(s * 2 + Math.floor(s / 4)) % this.scale.length]!;
-      const octave = s % 8 < 4 ? 12 : 24;
-      this.voice(semitone(this.root, degree + octave), t, 0.9, 0.12, "triangle");
+      // arpeggio / melody — pattern and octave shift differ per book
+      const degree = this.scale[(s * this.melodyJump + Math.floor(s / 4) + this.arpOffset) % len]!;
+      const octave = (s + this.arpOffset) % 8 < 4 ? 12 : 24;
+      this.voice(semitone(this.root, degree + octave), t, this.tempo * 2.6, 0.12, this.leadType);
 
-      // soft pad chord every bar
+      // soft pad chord every bar, voiced from the book's scale
       if (s % 8 === 0) {
-        const chordRoot = this.scale[(s / 8) % this.scale.length]!;
+        const chordRoot = this.scale[(s / 8 + this.arpOffset) % len]!;
         [0, 4, 7].forEach((iv, i) =>
-          this.voice(semitone(this.root, chordRoot + iv), t, 3.2, 0.055 - i * 0.008, "sine"),
+          this.voice(semitone(this.root, chordRoot + iv), t, this.tempo * 9, 0.055 - i * 0.008, "sine"),
         );
       }
 
-      // gentle bass pulse
-      if (s % 4 === 0) {
-        this.voice(semitone(this.root, -12), t, 1.1, 0.1, "sine");
+      // bass pulse — on-beat or syncopated depending on the book
+      if (s % 4 === this.arpOffset % 3) {
+        this.voice(semitone(this.root, -12), t, this.tempo * 3.2, 0.1, this.bassType);
       }
 
       this.step = s + 1;
-      this.nextNoteTime += stepDur;
+      this.nextNoteTime += this.tempo;
     }
   }
 
