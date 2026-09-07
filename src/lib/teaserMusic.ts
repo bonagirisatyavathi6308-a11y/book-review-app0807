@@ -36,12 +36,24 @@ export class TeaserMusic {
   private step = 0;
   private scale: number[];
   private root: number;
+  private tempo: number;
+  private leadType: OscillatorType;
+  private bassType: OscillatorType;
+  private melodyJump: number;
+  private filterFreq: number;
+  private arpOffset: number;
   private muted = false;
 
   constructor(seed: string) {
     const h = hash(seed || "book");
     this.scale = SCALES[h % SCALES.length]!;
     this.root = ROOTS[(h >> 3) % ROOTS.length]!;
+    this.tempo = TEMPOS[(h >> 5) % TEMPOS.length]!;
+    this.leadType = LEAD_TYPES[(h >> 8) % LEAD_TYPES.length]!;
+    this.bassType = BASS_TYPES[(h >> 11) % BASS_TYPES.length]!;
+    this.melodyJump = MELODY_STEPS[(h >> 13) % MELODY_STEPS.length]!;
+    this.filterFreq = FILTERS[(h >> 15) % FILTERS.length]!;
+    this.arpOffset = (h >> 17) % 5;
   }
 
   private ensureCtx() {
