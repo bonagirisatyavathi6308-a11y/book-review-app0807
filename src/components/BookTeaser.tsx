@@ -248,6 +248,7 @@ export default function BookTeaser({ book }: { book: Book }) {
           elapsedRef.current = DURATION;
           playingRef.current = false;
           setPlaying(false);
+          musicRef.current?.pause();
         }
         setProgress(elapsedRef.current / DURATION);
       } else {
@@ -262,6 +263,20 @@ export default function BookTeaser({ book }: { book: Book }) {
     };
   }, [draw]);
 
+  // one soundtrack per book; cleaned up on unmount / book change
+  useEffect(() => {
+    const music = new TeaserMusic(book.id);
+    musicRef.current = music;
+    return () => {
+      music.dispose();
+      musicRef.current = null;
+    };
+  }, [book.id]);
+
+  useEffect(() => {
+    musicRef.current?.setMuted(muted);
+  }, [muted]);
+
   // reset when the book changes
   useEffect(() => {
     elapsedRef.current = 0;
@@ -271,10 +286,19 @@ export default function BookTeaser({ book }: { book: Book }) {
   }, [book.id]);
 
   const toggle = () => {
-    if (elapsedRef.current >= DURATION) elapsedRef.current = 0;
+    if (elapsedRef.current >= DURATION) {
+      elapsedRef.current = 0;
+      musicRef.current?.restart();
+    }
     lastTickRef.current = null;
     playingRef.current = !playingRef.current;
     setPlaying(playingRef.current);
+    if (playingRef.current) {
+      musicRef.current?.setMuted(muted);
+      musicRef.current?.play();
+    } else {
+      musicRef.current?.pause();
+    }
   };
 
   const restart = () => {
@@ -282,6 +306,9 @@ export default function BookTeaser({ book }: { book: Book }) {
     lastTickRef.current = null;
     playingRef.current = true;
     setPlaying(true);
+    musicRef.current?.restart();
+    musicRef.current?.setMuted(muted);
+    musicRef.current?.play();
   };
 
   const seek = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -289,6 +316,7 @@ export default function BookTeaser({ book }: { book: Book }) {
     elapsedRef.current = clamp01((e.clientX - rect.left) / rect.width) * DURATION;
     setProgress(elapsedRef.current / DURATION);
   };
+
 
   const seconds = Math.ceil((DURATION - progress * DURATION) / 1000);
 
