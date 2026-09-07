@@ -76,7 +76,7 @@ export class TeaserMusic {
     const env = ctx.createGain();
     const filter = ctx.createBiquadFilter();
     filter.type = "lowpass";
-    filter.frequency.value = 2200;
+    filter.frequency.value = this.filterFreq;
     osc.type = type;
     osc.frequency.value = freq;
     env.gain.setValueAtTime(0.0001, time);
