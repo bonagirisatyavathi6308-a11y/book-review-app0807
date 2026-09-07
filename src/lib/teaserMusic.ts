@@ -10,6 +10,13 @@ const SCALES: number[][] = [
 
 const ROOTS = [220, 233.08, 246.94, 261.63, 293.66, 311.13];
 
+// Per-book arrangement presets — different tempos, rhythms, timbres.
+const TEMPOS = [0.26, 0.3, 0.35, 0.42, 0.5]; // seconds per step
+const LEAD_TYPES: OscillatorType[] = ["triangle", "sine", "square", "sawtooth"];
+const BASS_TYPES: OscillatorType[] = ["sine", "triangle"];
+const MELODY_STEPS = [2, 3, 1, 4]; // melody interval jump per style
+const FILTERS = [1400, 1800, 2200, 2800];
+
 function hash(str: string) {
   let h = 2166136261;
   for (let i = 0; i < str.length; i++) {
