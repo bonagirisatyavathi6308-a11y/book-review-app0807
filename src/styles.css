@@ -150,7 +150,6 @@
     overscroll-behavior-y: none;
     overflow-x: clip;
     width: 100%;
-  }
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
