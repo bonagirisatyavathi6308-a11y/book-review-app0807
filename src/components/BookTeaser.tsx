@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Pause, Play, RotateCcw } from "lucide-react";
+import { Pause, Play, RotateCcw, Volume2, VolumeX } from "lucide-react";
+import { TeaserMusic } from "@/lib/teaserMusic";
 import type { Book } from "@/lib/books.functions";
 
 const DURATION = 18_000; // ms
