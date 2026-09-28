@@ -82,7 +82,7 @@ function Onboarding() {
       }
       setErrors({});
     }
-    setStep((s) => Math.min(s + 1, 2));
+    setStep((s) => Math.min(s + 1, 3));
   }
 
   function finish() {
