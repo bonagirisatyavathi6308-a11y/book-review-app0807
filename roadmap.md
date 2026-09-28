@@ -1,0 +1,3 @@
+- [x] Add a scrollable Terms & Conditions agreement step before onboarding completes; require checkbox before continuing.
+- [x] Add the full Terms & Conditions to the bottom of the user profile for later review.
+- [x] Update the About Us contact email to appdevelopeverbonagiri@gmail.com.

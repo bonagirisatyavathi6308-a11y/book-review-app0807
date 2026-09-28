@@ -2,7 +2,9 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { Mascot } from "@/components/Logo";
-import { AUTHORS, CATEGORIES, LANGUAGES, emptyProfile, useProfile } from "@/lib/store";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { AUTHORS, CATEGORIES, LANGUAGES, TERMS_AND_CONDITIONS, emptyProfile, useProfile } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/onboarding")({
@@ -52,6 +54,7 @@ function Onboarding() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({ ...emptyProfile });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [termsAgreed, setTermsAgreed] = useState(false);
 
   const toggle = (key: "categories" | "authors", value: string) =>
     setForm((f) => ({
@@ -79,11 +82,12 @@ function Onboarding() {
       }
       setErrors({});
     }
-    setStep((s) => Math.min(s + 1, 2));
+    setStep((s) => Math.min(s + 1, 3));
   }
 
   function finish() {
-    saveProfile({ ...form, onboarded: true });
+    if (!termsAgreed) return;
+    saveProfile({ ...form, termsAccepted: true, onboarded: true });
     navigate({ to: "/home", replace: true });
   }
 
@@ -93,11 +97,11 @@ function Onboarding() {
         <div className="flex flex-col items-center gap-2">
           <Mascot className="h-24 w-24" />
           <h1 className="font-display text-2xl font-bold">Welcome to Book Review</h1>
-          <p className="text-sm text-muted-foreground">Step {step + 1} of 3</p>
+          <p className="text-sm text-muted-foreground">Step {step + 1} of 4</p>
         </div>
 
         <div className="mt-4 flex gap-2">
-          {[0, 1, 2].map((i) => (
+          {[0, 1, 2, 3].map((i) => (
             <span
               key={i}
               className={cn(
@@ -202,6 +206,34 @@ function Onboarding() {
             </div>
           ) : null}
 
+          {step === 3 ? (
+            <div className="space-y-4">
+              <div>
+                <h2 className="font-display text-lg font-bold">Terms &amp; Conditions</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Please read and agree before continuing.
+                </p>
+              </div>
+              <div
+                aria-label="Terms and Conditions"
+                className="max-h-72 space-y-3 overflow-y-auto rounded-xl border border-border bg-background p-4 text-sm leading-relaxed"
+              >
+                {TERMS_AND_CONDITIONS.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+              <label className="flex cursor-pointer items-start gap-3 text-sm font-medium">
+                <Checkbox
+                  checked={termsAgreed}
+                  onCheckedChange={(checked) => setTermsAgreed(checked === true)}
+                  aria-label="I have read and agree to the Terms and Conditions"
+                  className="mt-0.5"
+                />
+                <span>I have read and agree to the Terms and Conditions</span>
+              </label>
+            </div>
+          ) : null}
+
           <div className="mt-6 flex items-center justify-between gap-3">
             <button
               type="button"
@@ -211,7 +243,7 @@ function Onboarding() {
             >
               <ChevronLeft className="h-4 w-4" /> Back
             </button>
-            {step < 2 ? (
+            {step < 3 ? (
               <button
                 type="button"
                 onClick={next}
@@ -220,13 +252,14 @@ function Onboarding() {
                 Next <ChevronRight className="h-4 w-4" />
               </button>
             ) : (
-              <button
+              <Button
                 type="button"
                 onClick={finish}
-                className="press flex items-center gap-1 rounded-2xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-soft"
+                disabled={!termsAgreed}
+                className="press h-auto rounded-2xl px-5 py-2.5 font-bold shadow-soft"
               >
-                <Check className="h-4 w-4" /> Start reading
-              </button>
+                <Check className="h-4 w-4" /> Next
+              </Button>
             )}
           </div>
         </div>
