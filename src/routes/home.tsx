@@ -119,10 +119,10 @@ function HomePage() {
             {t("home.aboutBody")}
           </p>
           <a
-            href="mailto:hello@bookreview.app"
+            href="mailto:appdevelopeverbonagiri@gmail.com"
             className="press mt-3 inline-flex items-center gap-2 rounded-2xl bg-accent px-4 py-2 text-sm font-bold text-accent-foreground"
           >
-            <Mail className="h-4 w-4" /> hello@bookreview.app
+            <Mail className="h-4 w-4" /> appdevelopeverbonagiri@gmail.com
           </a>
         </footer>
       </main>

@@ -5,6 +5,7 @@ import AppHeader from "@/components/AppHeader";
 import BottomNav from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
 import { useHistory, useProfile, useReviews } from "@/lib/store";
+import { TERMS_AND_CONDITIONS } from "@/lib/store";
 import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/profile")({
@@ -154,6 +155,18 @@ function ProfilePage() {
             )}
           </section>
         )}
+        <section className="mt-8 border-t border-border pt-5">
+          <details>
+            <summary className="cursor-pointer list-none font-display text-lg font-bold">
+              Terms &amp; Conditions
+            </summary>
+            <div className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
+              {TERMS_AND_CONDITIONS.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          </details>
+        </section>
       </main>
       <BottomNav />
     </div>

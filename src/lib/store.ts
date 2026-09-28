@@ -8,6 +8,7 @@ export type Profile = {
   categories: string[];
   authors: string[];
   language: string;
+  termsAccepted: boolean;
   onboarded: boolean;
 };
 
@@ -80,6 +81,17 @@ export const LANGUAGES = [
   "日本語",
 ];
 
+export const TERMS_AND_CONDITIONS = [
+  "Welcome to Book Review. By creating a profile or using this application, you agree to these Terms and Conditions.",
+  "Book Review helps readers discover books and share opinions. Book details and cover images may be supplied by third-party catalogues and can be incomplete or inaccurate.",
+  "You are responsible for the text, ratings, and audio reviews you submit. Share only content you have the right to use. Do not post unlawful, abusive, misleading, or infringing material, or content that exposes another person’s private information.",
+  "Reviews represent the views of their authors, not Book Review. We may remove content that violates these terms or harms the community.",
+  "Your profile, browsing history, and reviews are stored in this browser on this device. Clearing browser storage may remove this information. Do not use this application to store sensitive personal information.",
+  "The application is provided as available, without a guarantee that every feature or third-party service will always be available or error-free. To the extent permitted by law, Book Review is not responsible for losses resulting from use of the application or reliance on book information or user reviews.",
+  "We may update these terms as the application changes. Continued use after an update means you accept the revised terms. You may stop using the application at any time.",
+  "For questions about these terms, contact appdevelopeverbonagiri@gmail.com.",
+];
+
 export const emptyProfile: Profile = {
   name: "",
   age: "",
@@ -88,6 +100,7 @@ export const emptyProfile: Profile = {
   categories: [],
   authors: [],
   language: "English",
+  termsAccepted: false,
   onboarded: false,
 };
 
