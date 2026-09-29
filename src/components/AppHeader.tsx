@@ -113,6 +113,34 @@ export function AppHeader({ showSearch = true }: { showSearch?: boolean }) {
               >
                 <UserCog className="h-4 w-4 text-primary" /> {t("header.editProfile")}
               </Link>
+            </div>
+
+            <div className="space-y-2">
+              <p className="px-1 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                More
+              </p>
+              <Link
+                to="/privacy-policy"
+                onClick={() => setOpen(false)}
+                className="press flex items-center gap-2 rounded-2xl bg-card p-3 text-sm font-semibold"
+              >
+                <Shield className="h-4 w-4 text-primary" /> Privacy Policy
+              </Link>
+              <Link
+                to="/about-us"
+                onClick={() => setOpen(false)}
+                className="press flex items-center gap-2 rounded-2xl bg-card p-3 text-sm font-semibold"
+              >
+                <Info className="h-4 w-4 text-primary" /> About Us
+              </Link>
+              <Link
+                to="/contact-us"
+                onClick={() => setOpen(false)}
+                className="press flex items-center gap-2 rounded-2xl bg-card p-3 text-sm font-semibold"
+              >
+                <Phone className="h-4 w-4 text-primary" /> Contact Us
+              </Link>
+            </div>
               <button
                 onClick={() => {
                   clearProfile();
