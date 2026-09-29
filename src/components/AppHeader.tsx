@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, Search as SearchIcon, X, Globe, LogOut, UserCog } from "lucide-react";
+import { Menu, Search as SearchIcon, X, Globe, LogOut, UserCog, Shield, Info, Phone } from "lucide-react";
 import { useState } from "react";
 import { Mascot } from "@/components/Logo";
 import { useProfile, LANGUAGES } from "@/lib/store";
