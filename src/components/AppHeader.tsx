@@ -113,6 +113,16 @@ export function AppHeader({ showSearch = true }: { showSearch?: boolean }) {
               >
                 <UserCog className="h-4 w-4 text-primary" /> {t("header.editProfile")}
               </Link>
+              <button
+                onClick={() => {
+                  clearProfile();
+                  setOpen(false);
+                  navigate({ to: "/onboarding" });
+                }}
+                className="press flex w-full items-center gap-2 rounded-2xl bg-card p-3 text-sm font-semibold text-destructive"
+              >
+                <LogOut className="h-4 w-4" /> {t("header.logout")}
+              </button>
             </div>
 
             <div className="space-y-2">
@@ -140,17 +150,6 @@ export function AppHeader({ showSearch = true }: { showSearch?: boolean }) {
               >
                 <Phone className="h-4 w-4 text-primary" /> Contact Us
               </Link>
-            </div>
-              <button
-                onClick={() => {
-                  clearProfile();
-                  setOpen(false);
-                  navigate({ to: "/onboarding" });
-                }}
-                className="press flex w-full items-center gap-2 rounded-2xl bg-card p-3 text-sm font-semibold text-destructive"
-              >
-                <LogOut className="h-4 w-4" /> {t("header.logout")}
-              </button>
             </div>
           </aside>
         </div>
